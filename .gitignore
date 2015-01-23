@@ -1,0 +1,14 @@
+/build/
+# Vim files.
+*~
+
+# Eclipse files.
+.checkstyle
+.classpath
+.project
+.settings
+.metadata
+bin
+
+# ESF files when running tests from within Eclipse.
+log/
