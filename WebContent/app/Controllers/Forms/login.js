@@ -7,6 +7,8 @@ var login = {}
  * CSS selector to get the representation of login page.
  */
 login.loginForm = "link[href='Forms/login.html']";
+login.userField = "link[href='Components/field-text.html']";
+login.userPass  = "link[href='Components/field-pass.html']";
 
 /**
  * This function builds login.
@@ -16,14 +18,13 @@ login.build = function() {
 	// get views
 	var views = core.getViews();
 	
-	// get login content
-	var content = views.querySelector(login.loginForm).import;
+	// get elements
+	var elementLogin = core.imp(views, login.loginForm).querySelector(".login");
+	var elementFieldUser = core.imp(views, login.userField).querySelector(".field-text");
+	var elementFieldPass = core.imp(views, login.userPass).querySelector(".field-pass");
 	
-	// get element
-	var element = content.querySelector(".login");
-	
-	// append login to header
-	jq('#header').append(element);
+	// build login
+	jq("#header").append(jq(elementLogin).append(elementFieldUser, elementFieldPass));
 	
 	return true;
 }
@@ -33,6 +34,9 @@ login.build = function() {
  */
 login.hide = function() {
 	
+	// change login style to visible.
+	jq(".login").css("visibility", "hidden");
+	
 	return true;
 }
 
@@ -41,10 +45,8 @@ login.hide = function() {
  */
 login.show = function() {
 
-	// get login content
-	var login = VIEWS.querySelector(login.css.loginForm).import;
-	
-	jq('#header').append('');
+	// change login style to visible.
+	jq(".login").css("visibility", "visible");
 	
 	return true;
 }
