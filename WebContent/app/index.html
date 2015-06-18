@@ -12,6 +12,8 @@
 		<link rel="import" href="Styles/styles.html"/>
 		<link rel="import" href="Controllers/controllers.html"/>
 		<link rel="import" href="Views/views.html"/>
+		
+		<script type="text/javascript">console.log("index.!")</script>
 
 	</head>
 	<body>
@@ -19,8 +21,23 @@
 		<div id="container">
 		
 			<div id="header"></div>
-			<div id="main_body"></div>
+			<div id="main_body">
+				
+			</div>
 			<div id="footer"></div>
+			
 		</div>
+		<script>
+
+		window.onload = function() {
+				
+				var controllers = document.querySelector('link[rel="import"][href="Controllers/controllers.html"]');
+			
+				controllers.addEventListener('load', function(e) {
+				
+					header.build();	
+				});	
+			};
+		</script>
 	</body>
 </html>

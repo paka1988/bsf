@@ -11,7 +11,10 @@ var core = {}
  */
 core.getViews = function() {
 	
-	return document.querySelector("link[href='Views/views.html']").import;
+	var head = document.getElementsByTagName("head").item(0);
+	head.insertAdjacentHTML('afterbegin',"<link rel=\"import\" href=\"http://localhost:8080/bsf/app/Views/views.html\" rel=\"import\"/>");
+	
+	return document.querySelector("link[href='http://localhost:8080/bsf/app/Views/views.html']").import;
 }
 
 /**

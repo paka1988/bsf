@@ -1,0 +1,25 @@
+<form class="login-pure pure-form" action="/bsf/Login" method="POST">
+    <fieldset>
+
+        <input name="email" type="email" placeholder="Email">
+        <input name="password" type="password" placeholder="Password">
+
+        <label for="remember">
+            <input id="remember" type="checkbox">
+            <em>{RememberMe}</em>
+        </label>
+
+        <button type="submit" class="login-submit pure-button pure-button-primary">{Submit}</button>
+    </fieldset>
+    <script id="login-pure-script">
+    
+		// init translation
+		var translation = {
+				
+				".login-pure label[for='remember'] > em":"RememberMe",
+				".login-pure .login-submit":"Submit"
+		};
+		
+		i18n.setTranslation("Translations/Forms/login-pure.json", translation);
+	</script>
+</form>
