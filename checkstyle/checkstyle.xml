@@ -76,7 +76,9 @@
 
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
-        <module name="JavadocMethod"/>
+        <module name="JavadocMethod">
+            <property name="scope" value="package"/>
+        </module>
         <module name="JavadocType"/>
         <module name="JavadocVariable">
             <property name="scope" value="package"/>
@@ -100,7 +102,6 @@
         <!-- Checks for imports                              -->
         <!-- See http://checkstyle.sf.net/config_import.html -->
         <module name="AvoidStarImport"/>
-        <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
 
@@ -109,7 +110,7 @@
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
         <module name="LineLength">
            <!-- Sun standard defaults to 80. -->
-           <property name="max" value="120"/>
+           <property name="max" value="140"/>
         </module>
         <module name="MethodLength">
            <!-- Sun standard defaults to 150. -->
@@ -123,7 +124,6 @@
         <module name="EmptyForIteratorPad"/>
         <module name="GenericWhitespace"/>
         <module name="MethodParamPad"/>
-        <module name="NoWhitespaceAfter"/>
         <!-- I think assignments like 'String master= this.getMasterValue();'
              are more readable. But it would increase the complexity of
              the CheckStyle configuration unnecessarily. We'll leave it that way -->
@@ -157,12 +157,10 @@
         <!--<module name="DoubleCheckedLocking"/>    MY FAVOURITE -->
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
-        <module name="HiddenField"/>
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
         <module name="MagicNumber"/>
         <module name="MissingSwitchDefault"/>
-        <module name="RedundantThrows"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
 

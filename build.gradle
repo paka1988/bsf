@@ -1,5 +1,7 @@
 apply plugin: "java"
+apply plugin: 'war'
 apply plugin: "eclipse"
+apply plugin: 'eclipse-wtp'
 apply plugin: "application"
 apply plugin: "checkstyle"
 
@@ -7,9 +9,51 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    main {
+        // where does the Java source code live?
+        java {
+            srcDir 'src/main/java'
+        }
+
+        // where do classpath resources like *.properties files live?
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+    
+    test {
+        
+        java {
+            
+            srcDir 'src/test/java'
+        }
+        
+        resources {
+            
+            srcDir 'src/test/resources'
+        }
+    }
+}
+
 dependencies {
     
     compile "commons-io:commons-io:2.4"
     compile "mysql:mysql-connector-java:5.1.35"
     compile "junit:junit:4.12"
+    compile "org.jsoup:jsoup:1.7.2"
+    compile "org.apache.tomcat:tomcat-catalina:8.0.12"
+    compile "org.mockito:mockito-all:1.8.4"    
+    
+    compile fileTree(dir: "WebContent/WEB-INF/lib", include: '*.jar')
+}
+
+eclipse {
+
+    wtp {
+    
+        component {
+            resource deployPath: '/', sourcePath: '/WebContent'
+        }
+    }
 }
