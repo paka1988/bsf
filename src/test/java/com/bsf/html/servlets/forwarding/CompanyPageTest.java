@@ -32,7 +32,8 @@ public class CompanyPageTest {
     private static String testHtmlMainMenu = "WebContent/app/templates/main-menu.html";
     private static String testHtmlIndex = "WebContent/index.html";
     private static String actualHtml = "src/test/resources/companyPageVar.html";
-    private static String expectedHtml = "src/test/resources/companyPageStatic.html";
+    private static String expectedHtml = "src/test/resources/companyPageStatic_en.html";
+    private static String dict_en = "src/main/resources/dictionary/Dictionary.en.json";
 
     @BeforeClass
     public static final void initData() throws Exception {
@@ -46,6 +47,7 @@ public class CompanyPageTest {
         when(req.getServletContext()).thenReturn(sc);
         when(sc.getRealPath("/index.html")).thenReturn(new File(testHtmlIndex).getAbsolutePath());
         when(sc.getRealPath("/app/templates/main-menu.html")).thenReturn(new File(testHtmlMainMenu).getAbsolutePath());
+        when(sc.getRealPath("/WEB-INF/classes/dictionary/Dictionary.en.json")).thenReturn(new File(dict_en).getAbsolutePath());
 
         pw = new PrintWriter(new File(actualHtml));
 

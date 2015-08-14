@@ -1,0 +1,15 @@
+.js-css-menu {
+  display: inline-block;
+}
+
+.js-css-menu, 
+.js-css-menu ul, 
+.js-css-menu li {
+  list-style: none; 
+  padding: 0; 
+  margin: 0;
+}
+
+.js-css-menu a {
+  text-decoration: none;
+}

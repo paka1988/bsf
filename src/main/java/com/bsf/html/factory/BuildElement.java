@@ -8,7 +8,11 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+
+import com.bsf.i18n.I18n;
+import com.bsf.i18n.LanguageCode;
 
 /**
  * Class which generates html elements.
@@ -20,18 +24,21 @@ public final class BuildElement {
 
     private String host;
     private ServletContext context;
+    private String servletName;
+    private String appName;
 
     /**
      *
      * @param request
      *            servlet request
-     * @param context
-     *            servlet context
      */
     public BuildElement(final HttpServletRequest request) {
 
         host = String.format("%s:%s", request.getServerName(), request.getServerPort());
-        this.context = request.getServletContext();
+        context = request.getServletContext();
+        appName = request.getContextPath();
+        servletName = request.getServletPath();
+        I18n.setServletContext(context);
     }
 
     /**
@@ -78,8 +85,39 @@ public final class BuildElement {
      */
     public Element createMainMenu() throws IOException {
 
-        File file = new File(context.getRealPath("/app/templates/main-menu.html"));
+        // read template
+        File templateFile = new File(context.getRealPath("/app/templates/main-menu.html"));
 
-        return Jsoup.parse(file, StandardCharsets.UTF_8.name());
+        // create document
+        Document mainMenu = Jsoup.parse(templateFile, StandardCharsets.UTF_8.name());
+
+        // put translations
+        mainMenu.getElementsContainingOwnText("Company").get(0).text(I18n.getDictionary().getString("Company"));
+        mainMenu.getElementsContainingOwnText("Home").get(0).text(I18n.getDictionary().getString("Home"));
+        mainMenu.getElementsContainingOwnText("About").get(0).text(I18n.getDictionary().getString("About"));
+        mainMenu.getElementsContainingOwnText("Services").get(0).text(I18n.getDictionary().getString("Services"));
+        mainMenu.getElementsContainingOwnText("Login").get(0).text(I18n.getDictionary().getString("Login"));
+        mainMenu.getElementsContainingOwnText("Contact").get(0).text(I18n.getDictionary().getString("Contact"));
+        mainMenu.getElementsContainingOwnText("More").get(0).text(I18n.getDictionary().getString("More"));
+
+        // put language hrefs
+        final String prefix = String.format("%s%s?language=", appName, servletName);
+
+        mainMenu.getElementsContainingOwnText("English").get(0).attr("href", prefix + LanguageCode.en_GB.name());
+        mainMenu.getElementsContainingOwnText("Deutsch").get(0).attr("href", prefix + LanguageCode.de_DE.name());
+
+        return mainMenu;
+    }
+
+    /**
+     *
+     * @return script element for requier.js
+     */
+    public Element createScriptRequierJs() {
+
+        final String href = String.format("http://%s/bsf/app/scripts/require.js", host);
+        final String strLink = String.format("<script type='text/javascript' src='%s' async></script>", href);
+
+        return Jsoup.parse(strLink, StandardCharsets.UTF_8.name());
     }
 }

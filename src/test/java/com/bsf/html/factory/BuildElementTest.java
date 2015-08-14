@@ -20,6 +20,7 @@ public class BuildElementTest {
 
     private static BuildElement be;
     private static String testHtml = "WebContent/app/templates/main-menu.html";
+    private static String dict_en = "src/main/resources/dictionary/Dictionary.en.json";
 
     @BeforeClass
     public static final void initData() {
@@ -31,6 +32,7 @@ public class BuildElementTest {
         when(req.getServerPort()).thenReturn(8080);
         when(req.getServletContext()).thenReturn(sc);
         when(sc.getRealPath("/app/templates/main-menu.html")).thenReturn(new File(testHtml).getAbsolutePath());
+        when(sc.getRealPath("/WEB-INF/classes/dictionary/Dictionary.en.json")).thenReturn(new File(dict_en).getAbsolutePath());
 
         be = new BuildElement(req);
     }
@@ -67,7 +69,7 @@ public class BuildElementTest {
     @Test
     public final void createMainMenuTest() throws IOException {
 
-        File f = new File(testHtml);
+        File f = new File("src/test/resources/main-menu.en.html");
 
         assertEquals(Jsoup.parse(f, StandardCharsets.UTF_8.name()).html(), be.createMainMenu().html());
     }

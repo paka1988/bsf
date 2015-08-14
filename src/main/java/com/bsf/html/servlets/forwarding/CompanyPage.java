@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +17,7 @@ import com.bsf.html.factory.BuildElement;
 /**
  * Servlet implementation class CompanyPage.
  */
-public class CompanyPage extends HttpServlet {
+public class CompanyPage extends AbstracPage {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,6 +34,9 @@ public class CompanyPage extends HttpServlet {
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 
+        // set language
+        setLanguage(request, response);
+
         final BuildElement be = new BuildElement(request);
 
         final String loc = request.getServletContext().getRealPath("/index.html");
@@ -43,14 +45,14 @@ public class CompanyPage extends HttpServlet {
         // read html index
         Document html = Jsoup.parse(f, StandardCharsets.UTF_8.name());
 
-        // add pure-min.css
-        html.select("head title").first().after(be.createCssLinkPureMin().html());
-
         // add main.css
         html.select("head title").first().after(be.createCssLinkMain().html());
 
         // add menu
         html.select("#menuLink").first().after(be.createMainMenu().html());
+
+        // add script
+        html.select("head title").first().after(be.createScriptRequierJs().html());
 
         // send response
         PrintWriter writer = response.getWriter();

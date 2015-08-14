@@ -44,6 +44,7 @@ dependencies {
     compile "org.jsoup:jsoup:1.7.2"
     compile "org.apache.tomcat:tomcat-catalina:8.0.12"
     compile "org.mockito:mockito-all:1.8.4"    
+    compile "org.json:json:20141113"
     
     compile fileTree(dir: "WebContent/WEB-INF/lib", include: '*.jar')
 }
