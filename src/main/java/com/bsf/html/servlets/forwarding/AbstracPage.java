@@ -1,12 +1,10 @@
 package com.bsf.html.servlets.forwarding;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bsf.i18n.I18n;
-import com.bsf.i18n.LanguageCode;
+import com.bsf.database.mysql.DataAccessObject;
 
 /**
  * Abstract servlet page.
@@ -14,34 +12,47 @@ import com.bsf.i18n.LanguageCode;
  * @author pkalashnikov
  *
  */
-public class AbstracPage extends HttpServlet {
+public abstract class AbstracPage extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     *
-     * @param request servlet request.
-     * @param response servlet response.
+     * Object to access data base information.
      */
-    public final void setLanguage(final HttpServletRequest request, final HttpServletResponse response) {
+    protected static final DataAccessObject DAO = new DataAccessObject();
 
-        // read language param
-        final String language = request.getParameter("language");
-        final Cookie[] cookies = request.getCookies();
+    /**
+     * Specifies the number of seconds until servlet container will invalidate the session.
+     */
+    private String sessionTimeout = "3600";
 
-        if (language != null && cookies != null) {
+    /**
+     *
+     * @return servlet request.
+     */
+    public abstract HttpServletRequest getServletRequest();
 
-            for (Cookie cookie : cookies) {
+    /**
+     *
+     * @return servlet response.
+     */
+    public abstract HttpServletResponse getServletResponse();
 
-                if ("language".equals(cookie.getName())) {
+    /**
+     *
+     * @return session timeout in seconds.
+     */
+    public final int getSessionTimeout() {
 
-                    I18n.setLanguage(LanguageCode.valueOf(language));
-                    response.addCookie(new Cookie("language", I18n.getLanguage().name()));
-                }
-            }
-        } else {
+        return Integer.valueOf(sessionTimeout);
+    }
 
-            response.addCookie(new Cookie("language", I18n.getLanguage().name()));
-        }
+    /**
+     *
+     * @param timeout timeout in seconds.
+     */
+    public final void setSessionTimeout(final int timeout) {
+
+        this.sessionTimeout = String.valueOf(timeout);
     }
 }

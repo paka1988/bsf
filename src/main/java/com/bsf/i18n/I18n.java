@@ -16,10 +16,16 @@ import org.json.JSONObject;
  */
 public final class I18n {
 
-    private static LanguageCode language = LanguageCode.en_GB;
-    private static ServletContext servletContext = null;
+    private LanguageCode language = null;
+    private ServletContext servletContext = null;
 
-    private I18n() {
+    /**
+     *
+     * @param language language code e.g.: en_GB.
+     */
+    public I18n(final LanguageCode language) {
+
+        this.language = language;
     }
 
     /**
@@ -29,7 +35,7 @@ public final class I18n {
      * @throws IOException
      *             if translation files are missing.
      */
-    public static JSONObject getDictionary() throws IOException {
+    public JSONObject getDictionary() throws IOException {
 
         if (servletContext == null) {
 
@@ -61,19 +67,9 @@ public final class I18n {
      *
      * @return current language value.
      */
-    public static LanguageCode getLanguage() {
+    public LanguageCode getLanguage() {
 
-        return I18n.language;
-    }
-
-    /**
-     *
-     * @param language
-     *            set system language.
-     */
-    public static void setLanguage(final LanguageCode language) {
-
-        I18n.language = language;
+        return this.language;
     }
 
     /**
@@ -81,8 +77,8 @@ public final class I18n {
      * @param context
      *            servlet context.
      */
-    public static void setServletContext(final ServletContext context) {
+    public void setServletContext(final ServletContext context) {
 
-        I18n.servletContext = context;
+        this.servletContext = context;
     }
 }

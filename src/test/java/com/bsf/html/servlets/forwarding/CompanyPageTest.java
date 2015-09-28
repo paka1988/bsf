@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
@@ -25,6 +26,7 @@ public class CompanyPageTest {
 
     private static HttpServletRequest req;
     private static HttpServletResponse resp;
+    private static HttpSession sess;
     private static ServletContext sc;
     private static PrintWriter pw;
 
@@ -40,8 +42,10 @@ public class CompanyPageTest {
 
         req = mock(HttpServletRequest.class);
         resp = mock(HttpServletResponse.class);
+        sess = mock(HttpSession.class);
         sc = mock(ServletContext.class);
 
+        when(req.getSession(true)).thenReturn(sess);
         when(req.getServerName()).thenReturn("localhost");
         when(req.getServerPort()).thenReturn(8080);
         when(req.getServletContext()).thenReturn(sc);

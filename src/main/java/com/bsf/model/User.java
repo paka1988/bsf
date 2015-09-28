@@ -2,24 +2,23 @@ package com.bsf.model;
 
 import java.sql.Date;
 
+import com.bsf.i18n.LanguageCode;
+
 /**
  * Corresponsd to table user.
  *
  * @author pkalashnikov
  *
  */
-public class User {
+public class User extends AbstractUser {
 
-    private int userId;
     private String userName;
     private String email;
     private String password;
     private Date creationTime;
+    private LanguageCode lc;
 
     /**
-     *
-     * @param userId
-     *            id.
      * @param userName
      *            name.
      * @param email
@@ -28,22 +27,17 @@ public class User {
      *            password.
      * @param creationTime
      *            date time.
+     * @param lc
+     *            language code.
      */
-    public User(final int userId, final String userName, final String email, final String password, final Date creationTime) {
+    public User(final String userName, final String email,
+            final String password, final Date creationTime, final LanguageCode lc) {
 
-        this.userId = userId;
         this.userName = userName;
         this.email = email;
         this.password = password;
         this.creationTime = creationTime;
-    }
-
-    /**
-     *
-     * @return user id.
-     */
-    public int getUserId() {
-        return userId;
+        this.lc = lc;
     }
 
     /**
@@ -76,5 +70,11 @@ public class User {
      */
     public Date getCreationTime() {
         return creationTime;
+    }
+
+    @Override
+    public LanguageCode getLanguageCode() {
+
+        return lc;
     }
 }

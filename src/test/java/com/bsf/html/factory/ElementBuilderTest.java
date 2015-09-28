@@ -8,6 +8,8 @@ import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import static org.junit.Assert.*;
 
@@ -16,9 +18,13 @@ import org.jsoup.nodes.Element;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class BuildElementTest {
+import com.bsf.html.servlets.forwarding.AbstracPage;
+import com.bsf.i18n.LanguageCode;
+import com.bsf.model.AnonymousUser;
 
-    private static BuildElement be;
+public class ElementBuilderTest {
+
+    private static ElementBuilder be;
     private static String testHtml = "WebContent/app/templates/main-menu.html";
     private static String dict_en = "src/main/resources/dictionary/Dictionary.en.json";
 
@@ -26,15 +32,21 @@ public class BuildElementTest {
     public static final void initData() {
 
         HttpServletRequest req = mock(HttpServletRequest.class);
+        HttpServletResponse resp = mock(HttpServletResponse.class);
         ServletContext sc = mock(ServletContext.class);
+        HttpSession session = mock(HttpSession.class);
+        AbstracPage ap = mock(AbstracPage.class);
 
         when(req.getServerName()).thenReturn("localhost");
         when(req.getServerPort()).thenReturn(8080);
         when(req.getServletContext()).thenReturn(sc);
+        when(req.getSession(true)).thenReturn(session);
         when(sc.getRealPath("/app/templates/main-menu.html")).thenReturn(new File(testHtml).getAbsolutePath());
         when(sc.getRealPath("/WEB-INF/classes/dictionary/Dictionary.en.json")).thenReturn(new File(dict_en).getAbsolutePath());
+        when(ap.getServletRequest()).thenReturn(req);
+        when(ap.getServletResponse()).thenReturn(resp);
 
-        be = new BuildElement(req);
+        be = new ElementBuilder(ap, new AnonymousUser(session.getId(), LanguageCode.en_GB));
     }
 
     @Test

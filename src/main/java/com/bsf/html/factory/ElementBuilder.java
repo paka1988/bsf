@@ -11,8 +11,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import com.bsf.html.servlets.forwarding.AbstracPage;
 import com.bsf.i18n.I18n;
 import com.bsf.i18n.LanguageCode;
+import com.bsf.model.AbstractUser;
 
 /**
  * Class which generates html elements.
@@ -20,25 +22,29 @@ import com.bsf.i18n.LanguageCode;
  * @author pkalashnikov
  *
  */
-public final class BuildElement {
+public final class ElementBuilder {
 
     private String host;
     private ServletContext context;
     private String servletName;
     private String appName;
+    private I18n i18n;
 
     /**
      *
-     * @param request
-     *            servlet request
+     * @param ap page instance.
+     * @param au user of this page.
      */
-    public BuildElement(final HttpServletRequest request) {
+    public ElementBuilder(final AbstracPage ap, final AbstractUser au) {
 
+        final HttpServletRequest request = ap.getServletRequest();
+
+        i18n = new I18n(au.getLanguageCode());
         host = String.format("%s:%s", request.getServerName(), request.getServerPort());
         context = request.getServletContext();
         appName = request.getContextPath();
         servletName = request.getServletPath();
-        I18n.setServletContext(context);
+        i18n.setServletContext(context);
     }
 
     /**
@@ -92,13 +98,13 @@ public final class BuildElement {
         Document mainMenu = Jsoup.parse(templateFile, StandardCharsets.UTF_8.name());
 
         // put translations
-        mainMenu.getElementsContainingOwnText("Company").get(0).text(I18n.getDictionary().getString("Company"));
-        mainMenu.getElementsContainingOwnText("Home").get(0).text(I18n.getDictionary().getString("Home"));
-        mainMenu.getElementsContainingOwnText("About").get(0).text(I18n.getDictionary().getString("About"));
-        mainMenu.getElementsContainingOwnText("Services").get(0).text(I18n.getDictionary().getString("Services"));
-        mainMenu.getElementsContainingOwnText("Login").get(0).text(I18n.getDictionary().getString("Login"));
-        mainMenu.getElementsContainingOwnText("Contact").get(0).text(I18n.getDictionary().getString("Contact"));
-        mainMenu.getElementsContainingOwnText("More").get(0).text(I18n.getDictionary().getString("More"));
+        mainMenu.getElementsContainingOwnText("Company").get(0).text(i18n.getDictionary().getString("Company"));
+        mainMenu.getElementsContainingOwnText("Home").get(0).text(i18n.getDictionary().getString("Home"));
+        mainMenu.getElementsContainingOwnText("About").get(0).text(i18n.getDictionary().getString("About"));
+        mainMenu.getElementsContainingOwnText("Services").get(0).text(i18n.getDictionary().getString("Services"));
+        mainMenu.getElementsContainingOwnText("Login").get(0).text(i18n.getDictionary().getString("Login"));
+        mainMenu.getElementsContainingOwnText("Contact").get(0).text(i18n.getDictionary().getString("Contact"));
+        mainMenu.getElementsContainingOwnText("More").get(0).text(i18n.getDictionary().getString("More"));
 
         // put language hrefs
         final String prefix = String.format("%s%s?language=", appName, servletName);

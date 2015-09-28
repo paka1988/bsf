@@ -18,12 +18,14 @@ public class I18nTest {
 
     private static String testHtmlEn = "src/main/resources/dictionary/Dictionary.en.json";
     private static String testHtmlDe = "src/main/resources/dictionary/Dictionary.de.json";
+    private static I18n i18n = new I18n(LanguageCode.en_GB);
+    private static ServletContext sc;
 
     @BeforeClass
     public static final void initData() {
 
         HttpServletRequest req = mock(HttpServletRequest.class);
-        ServletContext sc = mock(ServletContext.class);
+        sc = mock(ServletContext.class);
 
         when(req.getServerName()).thenReturn("localhost");
         when(req.getServerPort()).thenReturn(8080);
@@ -31,19 +33,22 @@ public class I18nTest {
         when(sc.getRealPath("/WEB-INF/classes/dictionary/Dictionary.en.json")).thenReturn(new File(testHtmlEn).getAbsolutePath());
         when(sc.getRealPath("/WEB-INF/classes/dictionary/Dictionary.de.json")).thenReturn(new File(testHtmlDe).getAbsolutePath());
 
-        I18n.setServletContext(sc);
+        i18n.setServletContext(sc);
     }
 
     @Test
     public final void getDictionaryTest() throws IOException {
 
-        JSONObject jsobjEn = I18n.getDictionary();
+        JSONObject jsobjEn = i18n.getDictionary();
 
+        // check english
         Assert.assertEquals("About", jsobjEn.get("About"));
 
-        I18n.setLanguage(LanguageCode.de_DE);
-        JSONObject jsobjDe = I18n.getDictionary();
+        i18n = new I18n(LanguageCode.de_DE);
+        i18n.setServletContext(sc);
+        JSONObject jsobjDe = i18n.getDictionary();
 
+        // check german
         Assert.assertEquals("Hilfe", jsobjDe.get("About"));
     }
 }
