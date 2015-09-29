@@ -41,6 +41,29 @@ public class DataAccessObject implements DaoInterface {
     }
 
     @Override
+    public void deleteAnonymousUser(final AnonymousUser user) {
+
+        final String stmtDeleteUser = "DELETE FROM anonymoususers WHERE session_id=?";
+
+        PreparedStatement ps = null;
+
+
+        try {
+
+            ps = CONN.prepareStatement(stmtDeleteUser);
+            ps.setString(1, user.getSessionId());
+
+            ps.execute();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+
+            closeSqlStatement(ps);
+        }
+    }
+
+    @Override
     public void deleteUser(final User user) {
 
         final String stmtDeleteUser = "DELETE FROM users WHERE email=?";
@@ -65,7 +88,7 @@ public class DataAccessObject implements DaoInterface {
     @Override
     public AnonymousUser getAnonymousUser(final String sessionId) {
 
-        final String stmtGetAnonymousUser = "SELECT * FROM AnonymousUsers WHERE session_id=?";
+        final String stmtGetAnonymousUser = "SELECT * FROM anonymoususers WHERE session_id=?";
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -164,7 +187,7 @@ public class DataAccessObject implements DaoInterface {
     public void setAnonymousUser(final AnonymousUser user) {
 
         final String stmtInsertAnonymousUser = "INSERT INTO anonymoususers (session_id, language_code, created, valid_until) "
-                + "values (?, ?, NOW(), ?) ON duplicate key UPDATE language_code=?";
+                + "values (?, ?, ?, ?) ON duplicate key UPDATE language_code=VALUES(language_code)";
 
         PreparedStatement ps = null;
 

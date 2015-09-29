@@ -56,6 +56,10 @@ public class DataAccessObjectTest {
         assertEquals("SomeSessionId", user.getSessionId());
 
         // delete
+        dao.deleteAnonymousUser(user);
+        user = dao.getAnonymousUser("SomeSessionId");
+
+        assertNull("User wasn't deleted", user);
 
     }
 }

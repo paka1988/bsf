@@ -14,6 +14,12 @@ public interface DaoInterface {
 
     /**
      *
+     * @param user anonymous user.
+     */
+    void deleteAnonymousUser(final AnonymousUser user);
+
+    /**
+     *
      * @param user user.
      */
     void deleteUser(final User user);
